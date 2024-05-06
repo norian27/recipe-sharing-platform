@@ -8,6 +8,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 import java.net.URI;
@@ -29,60 +30,61 @@ public class App extends Application {
     private final TextArea instructionsArea = new TextArea();
     private final ListView<String> recipesListView = new ListView<>();
     private final ObservableList<String> recipes = FXCollections.observableArrayList();
-    private final Label recipeDetails = new Label();
+    private final TextArea recipeDetails = new TextArea();
 
     @Override
     public void start(Stage primaryStage) {
         TabPane tabPane = new TabPane();
+        Tab createTab = new Tab("Create Recipe", createRecipeForm());
+        createTab.setClosable(false);  // Ensure the tab cannot be closed
 
-        Platform.runLater(this::fetchRecipes);
+        Tab viewTab = new Tab("View Recipes", createRecipeViewer());
+        viewTab.setClosable(false);  // Ensure the tab cannot be closed
 
-        // Setup UI components
-        setupTabs(tabPane, primaryStage);
+        tabPane.getTabs().addAll(createTab, viewTab);
 
-        Scene scene = new Scene(tabPane, 800, 400);
+        Scene scene = new Scene(tabPane, 800, 600);
         primaryStage.setTitle("Recipe Sharing Platform");
         primaryStage.setScene(scene);
         primaryStage.show();
+
+        fetchRecipes();  // Initial fetch of recipes
     }
 
-    private void setupTabs(TabPane tabPane, Stage primaryStage) {
-        Tab createTab = new Tab("Create Recipe", createRecipeForm());
-        createTab.setClosable(false);
-
-        Tab viewTab = new Tab("View Recipes", new ScrollPane(recipesListView));
-        viewTab.setClosable(false);
-        viewTab.setOnSelectionChanged(e -> {
-            if (viewTab.isSelected()) {
-                System.out.println("Fetching recipes on tab selection...");
-                fetchRecipes();
-            }
-        });
-
-        Tab detailsTab = new Tab("Recipe Details", new ScrollPane(recipeDetails));
-        detailsTab.setClosable(false);
-        detailsTab.setDisable(true);
-
-        recipesListView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
-            if (newSelection != null) {
-                showRecipeDetails(newSelection);
-                detailsTab.setDisable(false);
-                tabPane.getSelectionModel().select(detailsTab);
-            }
-        });
-
-        tabPane.getTabs().addAll(createTab, viewTab, detailsTab);
-    }
     private VBox createRecipeForm() {
         Button submitButton = new Button("Submit Recipe");
         submitButton.setOnAction(e -> submitRecipe(titleField.getText(), descriptionArea.getText(), ingredientsArea.getText(), instructionsArea.getText()));
-
-        return new VBox(10,
+        VBox formBox = new VBox(10,
                 new Label("Title"), titleField,
                 new Label("Description"), descriptionArea,
                 new Label("Ingredients"), ingredientsArea,
                 new Label("Instructions"), instructionsArea,
                 submitButton);
+        return formBox;
+    }
+
+    private SplitPane createRecipeViewer() {
+        SplitPane splitPane = new SplitPane(createListView(), createDetailView());
+        splitPane.setDividerPositions(0.3);
+        return splitPane;
+    }
+
+    private VBox createListView() {
+        VBox listBox = new VBox(new Label("Recipes"), new ScrollPane(recipesListView));
+        listBox.setSpacing(10);
+        recipesListView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                showRecipeDetails(newSelection);
+            }
+        });
+        return listBox;
+    }
+
+    private VBox createDetailView() {
+        VBox detailBox = new VBox(new Label("Recipe Details"), recipeDetails);
+        recipeDetails.setEditable(false);
+        detailBox.setSpacing(10);
+        return detailBox;
     }
 
     private void submitRecipe(String title, String description, String ingredients, String instructions) {
@@ -97,8 +99,6 @@ public class App extends Application {
         HttpClient client = HttpClient.newHttpClient();
         client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
                 .thenAccept(response -> {
-                    System.out.println("Submitted. Status code: " + response.statusCode());
-                    System.out.println("Response body: " + response.body());
                     if (response.statusCode() == 201) {
                         clearForm();
                         fetchRecipes();
@@ -108,6 +108,7 @@ public class App extends Application {
                     return null;
                 });
     }
+
     private void clearForm() {
         titleField.clear();
         descriptionArea.clear();
@@ -124,8 +125,6 @@ public class App extends Application {
         HttpClient client = HttpClient.newHttpClient();
         client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
                 .thenAccept(response -> {
-                    System.out.println("Fetch response status: " + response.statusCode());
-                    System.out.println("Fetch response body: " + response.body());
                     if (response.statusCode() == 200) {
                         updateRecipesListView(response.body());
                     }
@@ -151,7 +150,6 @@ public class App extends Application {
                     .map(recipe -> recipe.getTitle() + " - " + recipe.getIngredients())
                     .collect(Collectors.toList());
         } catch (JsonProcessingException e) {
-            System.err.println("Error parsing JSON: " + json);
             e.printStackTrace();
             return Collections.emptyList();
         }
