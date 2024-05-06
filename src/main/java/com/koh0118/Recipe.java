@@ -1,21 +1,16 @@
 package com.koh0118;
 
+import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
-@Data
-public class Recipe {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+@Getter
+@Setter
+public class Recipe extends PanacheEntity {
     private String title;
     private String description;
     private String ingredients;
     private String instructions;
-
-    // Getters and Setters
 }
