@@ -10,7 +10,7 @@ quarkus:
       url: jdbc:h2:file:/data/db/testdb;DB_CLOSE_DELAY=-1
   hibernate-orm:
     database:
-      generation: drop-and-create
+      generation: update
     sql-load-script: import.sql
     log:
       sql: true
