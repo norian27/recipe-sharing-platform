@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Text?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.koh0118.AppController">
+    <children>
+        <TabPane prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE">
+            <tabs>
+                <Tab closable="false" text="Create a Recipe">
+                    <content>
+                        <Pane prefHeight="200.0" prefWidth="200.0">
+                            <children>
+                                <TextField fx:id="create_recipe_name_textfield" layoutX="38.0" layoutY="61.0" onAction="#submitRecipe" />
+                                <TextArea fx:id="create_recipe_description_textfield" layoutX="270.0" layoutY="61.0" prefHeight="93.0" prefWidth="200.0" />
+                                <TextField fx:id="create_recipe_ingredients_textfield" layoutX="38.0" layoutY="116.0" />
+                                <TextArea fx:id="create_recipe_steps_textfield" layoutX="270.0" layoutY="202.0" prefHeight="93.0" prefWidth="200.0" />
+                                <Button fx:id="create_recipe_submit" layoutX="39.0" layoutY="270.0" mnemonicParsing="false" onAction="#submitRecipe" text="Submit" />
+                        <Text id="create_a_recipe_ingredients_text" layoutX="37.0" layoutY="112.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ingredients" />
+                        <Text id="create_a_recipe_name_text" layoutX="37.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name" />
+                        <Text id="create_a_recipe_description_text" layoutX="270.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Description" />
+                        <Text id="create_a_recipe_instructions_text" layoutX="270.0" layoutY="199.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Instructions" />
+                            </children>
+                        </Pane>
+                    </content>
+                </Tab>
+                <Tab closable="false" text="Recipes">
+                    <content>
+                        <Pane prefHeight="200.0" prefWidth="200.0">
+                            <children>
+                                <ListView fx:id="recipes_all_recipes_listview" layoutX="20.0" layoutY="22.0" prefHeight="328.0" prefWidth="200.0" />
+                                <Button fx:id="recipes_add_to_plan" layoutX="256.0" layoutY="270.0" mnemonicParsing="false" onAction="#addRecipeToPlan" text="Add to Plan" />
+                                <Button fx:id="recipes_edit_recipe" layoutX="256.0" layoutY="301.0" mnemonicParsing="false" onAction="#editRecipe" text="Edit Recipe" />
+                                <Button fx:id="recipes_delete_recipe" layoutX="512.0" layoutY="270.0" mnemonicParsing="false" onAction="#deleteRecipe" text="Delete" textFill="RED" />
+                                <TextField fx:id="recipes_recipe_name" layoutX="256.0" layoutY="22.0" />
+                                <TextArea fx:id="recipes_recipe_details" layoutX="256.0" layoutY="72.0" prefHeight="179.0" prefWidth="307.0" />
+                            </children>
+                        </Pane>
+                    </content>
+                </Tab>
+                <Tab closable="false" text="Planner">
+                    <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                            <children>
+                                <ListView fx:id="planner_recipes_in_planner_listview" layoutX="20.0" layoutY="22.0" prefHeight="260.0" prefWidth="200.0" />
+                                <Button fx:id="planner_recipes_in_planner_remove_button" layoutX="22.0" layoutY="316.0" mnemonicParsing="false" onAction="#removeFromPlanner" text="Remove from Planner" />
+                                <ChoiceBox fx:id="planner_recipes_in_planner_mon_choices" layoutX="242.0" layoutY="45.0" prefWidth="150.0" />
+                                <ChoiceBox fx:id="planner_recipes_in_planner_tue_choices" layoutX="242.0" layoutY="86.0" prefWidth="150.0" />
+                                <ChoiceBox fx:id="planner_recipes_in_planner_wed_choices" layoutX="242.0" layoutY="127.0" prefWidth="150.0" />
+                                <ChoiceBox fx:id="planner_recipes_in_planner_thu_choices" layoutX="242.0" layoutY="173.0" prefWidth="150.0" />
+                                <ChoiceBox fx:id="planner_recipes_in_planner_fri_choices" layoutX="242.0" layoutY="214.0" prefWidth="150.0" />
+                            </children>
+                        </AnchorPane>
+                    </content>
+                </Tab>
+            <Tab text="Plan">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Text layoutX="238.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Meal plan for this week:" />
+                        <Text layoutX="62.0" layoutY="99.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Monday" />
+                        <Text layoutX="122.0" layoutY="99.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tuesday" />
+                        <Text layoutX="176.0" layoutY="99.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Wednesday" />
+                        <Text layoutX="251.0" layoutY="99.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Thursday" />
+                        <Text layoutX="318.0" layoutY="99.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Friday" />
+                     </children>
+                  </AnchorPane>
+              </content>
+            </Tab>
+            </tabs>
+        </TabPane>
+    </children>
+</Pane>
