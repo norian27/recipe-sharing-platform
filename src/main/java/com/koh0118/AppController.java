@@ -57,7 +57,7 @@ public class AppController {
     private ListView<String> planListViewRecipes;
 
     private Map<String, String> dayToRecipeMap = new HashMap<>();
-    private Map<String, String> dayToRecipeDetails = new HashMap<>();
+    private Map<String, RecipeDTO> dayToRecipeDetails = new HashMap<>();
 
 
     private String currentUsername;
@@ -86,22 +86,26 @@ public class AppController {
             return;
         }
         String day = selected.split(":")[0].trim();
-        RecipeDTO details = (RecipeDTO) dayToRecipeDetails.get(day);
+        RecipeDTO details = dayToRecipeDetails.get(day); // Directly retrieve as RecipeDTO
         if (details != null) {
             openRecipeCard(details);
         }
     }
 
-    private void openRecipeCard(String details) {
+
+
+    private void openRecipeCard(RecipeDTO details) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/recipe_card.fxml"));
             Parent root = loader.load();
-            RecipeCardAppController controller = loader.getController();
-            controller.setRecipeDetails(details);
-
             Stage stage = new Stage();
             stage.setTitle("Recipe Details");
             stage.setScene(new Scene(root));
+
+            RecipeCardAppController controller = loader.getController();
+            controller.setRecipeDetails(details);
+
+
             stage.show();
         } catch (IOException e) {
             System.out.println("Error loading the recipe card view: " + e.getMessage());
@@ -110,22 +114,7 @@ public class AppController {
     }
 
 
-    private void showRecipeCard(String recipeDetails) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/recipe_card.fxml"));
-            Parent root = loader.load();
 
-            RecipeCardAppController controller = loader.getController();
-            controller.setRecipeDetails(recipeDetails);  // Pass the selected recipe details to the RecipeCardController
-
-            Stage stage = new Stage();
-            stage.setTitle("Recipe Details");
-            stage.setScene(new Scene(root));
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     private void setupChoiceBoxListeners() {
         planner_recipes_in_planner_mon_choices.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> setRecipeForDay("monday", newVal, planner_recipes_in_planner_mon_choices));
@@ -219,6 +208,7 @@ public class AppController {
         }
     }
 
+
     private void restoreChoiceBoxSelections() {
         restoreSelection(planner_recipes_in_planner_mon_choices, dayToRecipeMap.get("monday"));
         restoreSelection(planner_recipes_in_planner_tue_choices, dayToRecipeMap.get("tuesday"));
@@ -310,10 +300,10 @@ public class AppController {
     private void showRecipeDetails() {
         String selectedRecipe = recipes_all_recipes_listview.getSelectionModel().getSelectedItem();
         if (selectedRecipe != null && !selectedRecipe.isEmpty()) {
-            String[] parts = selectedRecipe.split(" - ", 2); // Splits into two parts at the first occurrence of " - "
-            if (parts.length == 2) {
-                recipes_recipe_name.setText(parts[0]); // Set the title in the TextField
-                recipes_recipe_details.setText(parts[1]); // Set the ingredients in the TextArea
+            String[] parts = selectedRecipe.split(" - ", 4); // Splits into two parts at the first occurrence of " - "
+            if (parts.length == 4) {
+                recipes_recipe_name.setText(parts[1]); // Set the title in the TextField
+                recipes_recipe_details.setText(parts[2]); // Set the ingredients in the TextArea
             } else {
                 recipes_recipe_name.setText(selectedRecipe); // Fallback in case there is no " - " in the string
                 recipes_recipe_details.clear();
@@ -431,8 +421,50 @@ public class AppController {
     public void editRecipe(ActionEvent actionEvent) {
     }
 
+    @FXML
     public void deleteRecipe(ActionEvent actionEvent) {
+        String selected = recipes_all_recipes_listview.getSelectionModel().getSelectedItem();
+        if (selected == null) {
+            System.out.println("No recipe selected to delete.");
+            return;
+        }
+
+        Long recipeId;
+        try {
+            recipeId = Long.parseLong(selected.split(" - ")[0]);
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid format for recipe ID.");
+            return;
+        }
+
+        deleteRecipeFromServer(recipeId);
     }
+    private void deleteRecipeFromServer(Long recipeId) {
+        String requestUri = "http://localhost:8080/recipes/delete/" + recipeId;
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(requestUri))
+                .DELETE()
+                .build();
+
+        HttpClient.newHttpClient().sendAsync(request, HttpResponse.BodyHandlers.ofString())
+                .thenApply(HttpResponse::statusCode)
+                .thenAccept(statusCode -> {
+                    if (statusCode == 200) {
+                        Platform.runLater(() -> {
+                            recipes_all_recipes_listview.getItems().removeIf(item -> item.startsWith(recipeId + " -"));
+                            System.out.println("Recipe deleted successfully.");
+                        });
+                    } else {
+                        Platform.runLater(() -> System.out.println("Failed to delete recipe, status code: " + statusCode));
+                    }
+                }).exceptionally(ex -> {
+                    System.out.println("Error deleting recipe: " + ex.getMessage());
+                    return null;
+                });
+    }
+
+
     @FXML
     private void removeFromPlanner(ActionEvent actionEvent) {
         String selectedEntry = planner_recipes_in_planner_listview.getSelectionModel().getSelectedItem();

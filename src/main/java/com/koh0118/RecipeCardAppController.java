@@ -13,8 +13,8 @@ import java.io.IOException;
 public class RecipeCardAppController {
 
     @FXML private Text recipe_card_name;
-    @FXML private TextArea recipe_card_descrption;
-    @FXML private TextArea recipe_card_insctructions;
+    @FXML private TextArea recipe_card_description;
+    @FXML private TextArea recipe_card_instructions;
     @FXML private TextArea recipe_card_ingredients;
 
     private Stage primaryStage;
@@ -36,14 +36,18 @@ public class RecipeCardAppController {
             e.printStackTrace();
         }
     }
-
-    public void setRecipeDetails(Object recipeDetailsObject) {
-        if (recipeDetailsObject instanceof RecipeDTO) {
-            RecipeDTO recipe = (RecipeDTO) recipeDetailsObject;
-            recipe_card_name.setText(recipe.getTitle());
-            recipe_card_descrption.setText(recipe.getDescription());
-            recipe_card_ingredients.setText(recipe.getIngredients());
-            recipe_card_insctructions.setText(recipe.getInstructions());
+    public void setRecipeDetails(RecipeDTO details) {
+        try {
+            recipe_card_name.setText(details.getTitle());
+            recipe_card_description.setText(details.getDescription());
+            recipe_card_instructions.setText(details.getInstructions());
+            recipe_card_ingredients.setText(details.getIngredients());
+        } catch (NullPointerException e) {
+            System.err.println("Component not initialized.");
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.err.println("Error setting recipe details.");
+            e.printStackTrace();
         }
     }
 

@@ -36,19 +36,49 @@ public class RecipeResource {
     }
 
     @DELETE
-    @Path("/{id}")
+    @Path("delete/{id}")
     @Transactional
     public Response deleteRecipe(@PathParam("id") Long id) {
-        boolean deleted = Recipe.deleteById(id);
-        if (deleted) {
-            return Response.ok().build();
-        } else {
+        Recipe recipe = Recipe.findById(id);
+        if (recipe == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
+
+        List<Planner> planners = Planner.list("mondayRecipe", recipe);
+        planners.addAll(Planner.list("tuesdayRecipe", recipe));
+        planners.addAll(Planner.list("wednesdayRecipe", recipe));
+        planners.addAll(Planner.list("thursdayRecipe", recipe));
+        planners.addAll(Planner.list("fridayRecipe", recipe));
+        for (Planner planner : planners) {
+            if (planner.getMondayRecipe() != null && planner.getMondayRecipe().getId().equals(id)) {
+                planner.setMondayRecipe(null);
+            }
+            if (planner.getTuesdayRecipe() != null && planner.getTuesdayRecipe().getId().equals(id)) {
+                planner.setTuesdayRecipe(null);
+            }
+            if (planner.getWednesdayRecipe() != null && planner.getWednesdayRecipe().getId().equals(id)) {
+                planner.setWednesdayRecipe(null);
+            }
+            if (planner.getThursdayRecipe() != null && planner.getThursdayRecipe().getId().equals(id)) {
+                planner.setThursdayRecipe(null);
+            }
+            if (planner.getFridayRecipe() != null && planner.getFridayRecipe().getId().equals(id)) {
+                planner.setFridayRecipe(null);
+            }
+        }
+
+        List<Planner> plannersWithGeneralRecipe = Planner.find("select p from Planner p join p.recipes r where r.id = ?1", id).list();
+        for (Planner planner : plannersWithGeneralRecipe) {
+            planner.getRecipes().removeIf(r -> r.getId().equals(id));
+        }
+
+        Recipe.deleteById(id);
+
+        return Response.ok().build();
     }
 
     @PUT
-    @Path("/{id}")
+    @Path("update/{id}")
     @Transactional
     public Response updateRecipe(@PathParam("id") Long id, Recipe update) {
         Recipe recipe = Recipe.findById(id);

@@ -8,16 +8,16 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="448.0" prefWidth="373.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.koh0118.RecipeCardAppController">
    <children>
-      <Text id="fx:recipe_card_name" layoutX="148.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name">
+      <Text fx:id="recipe_card_name" layoutX="148.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name">
          <font>
             <Font size="29.0" />
          </font>
       </Text>
-      <TextArea id="fx:recipe_card_descrption" editable="false" layoutX="38.0" layoutY="107.0" prefHeight="117.0" prefWidth="297.0" />
-      <Text id="fx:recipe_card_description_title" layoutX="38.0" layoutY="103.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Description" />
-      <TextArea id="fx:recipe_card_insctructions" editable="false" layoutX="38.0" layoutY="241.0" prefHeight="117.0" prefWidth="297.0" />
-      <Text id="fx:recipe_card_instructions_title" layoutX="38.0" layoutY="237.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Instructions" />
-      <TextArea id="fx:recipe_card_ingredients" layoutX="38.0" layoutY="375.0" prefHeight="39.0" prefWidth="297.0" />
-      <Text id="fx:recipe_card_ingredients_title" layoutX="38.0" layoutY="371.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ingredients" />
+      <TextArea fx:id="recipe_card_description" editable="false" layoutX="38.0" layoutY="107.0" prefHeight="117.0" prefWidth="297.0" />
+      <Text fx:id="recipe_card_description_title" layoutX="38.0" layoutY="103.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Description" />
+      <TextArea fx:id="recipe_card_instructions" editable="false" layoutX="38.0" layoutY="241.0" prefHeight="117.0" prefWidth="297.0" />
+      <Text fx:id="recipe_card_instructions_title" layoutX="38.0" layoutY="237.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Instructions" />
+      <TextArea fx:id="recipe_card_ingredients" layoutX="38.0" layoutY="375.0" prefHeight="39.0" prefWidth="297.0" />
+      <Text fx:id="recipe_card_ingredients_title" layoutX="38.0" layoutY="371.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ingredients" />
    </children>
 </AnchorPane>

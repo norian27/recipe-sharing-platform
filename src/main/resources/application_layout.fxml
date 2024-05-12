@@ -41,8 +41,8 @@
                                 <Button fx:id="recipes_add_to_plan" layoutX="256.0" layoutY="270.0" mnemonicParsing="false" onAction="#addRecipeToPlan" text="Add to Plan" />
                                 <Button fx:id="recipes_edit_recipe" layoutX="256.0" layoutY="301.0" mnemonicParsing="false" onAction="#editRecipe" text="Edit Recipe" />
                                 <Button fx:id="recipes_delete_recipe" layoutX="512.0" layoutY="270.0" mnemonicParsing="false" onAction="#deleteRecipe" text="Delete" textFill="RED" />
-                                <TextField fx:id="recipes_recipe_name" layoutX="256.0" layoutY="22.0" />
-                                <TextArea fx:id="recipes_recipe_details" layoutX="256.0" layoutY="72.0" prefHeight="179.0" prefWidth="307.0" />
+                                <TextField fx:id="recipes_recipe_name" editable="false" layoutX="256.0" layoutY="22.0" />
+                                <TextArea fx:id="recipes_recipe_details" editable="false" layoutX="256.0" layoutY="72.0" prefHeight="179.0" prefWidth="307.0" />
                             </children>
                         </Pane>
                     </content>
