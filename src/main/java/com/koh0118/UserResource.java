@@ -7,6 +7,9 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import jakarta.transaction.Transactional;
+
+
 
 @Path("/auth")
 public class UserResource {
@@ -17,34 +20,43 @@ public class UserResource {
     @Path("/login")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response login(User user) {
-        User foundUser = userRepository.find("username", user.getUsername()).firstResult();
+    public Response login(UserDTO userDTO) {  // Using DTO to manage data transfer
+        User foundUser = userRepository.find("username", userDTO.getUsername()).firstResult();
 
-        if (foundUser != null && foundUser.checkPassword(user.getPasswordHash())) {
-            // Login success: For simplicity, returning the user details
-            // In practice, you should return a JWT or session token
-            return Response.ok(foundUser).build();
+        if (foundUser == null) {
+            return Response.status(Response.Status.UNAUTHORIZED).entity("User not found").build();
+        } else if (!foundUser.checkPassword(userDTO.getPassword())) {  // Verify with the plain password from the DTO
+            return Response.status(Response.Status.UNAUTHORIZED).entity("Invalid password").build();
         } else {
-            // Login failed
-            return Response.status(Response.Status.UNAUTHORIZED).entity("Invalid credentials").build();
+            return Response.ok(foundUser).build();
         }
     }
+
     @POST
     @Path("/register")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response register(User user) {
-        if (user.getUsername() == null || user.getPasswordHash() == null) {
+    @Transactional
+    public Response register(UserDTO userDTO) {  // Using DTO to manage data transfer
+        if (userDTO.getUsername() == null || userDTO.getPassword() == null) {
             return Response.status(Response.Status.BAD_REQUEST).entity("Missing information").build();
         }
 
-        // Check if the user already exists
-        if (userRepository.find("username", user.getUsername()).firstResult() != null) {
+        if (userRepository.find("username", userDTO.getUsername()).firstResult() != null) {
             return Response.status(Response.Status.CONFLICT).entity("User already exists").build();
         }
 
-        user.setPassword(user.getPasswordHash()); // Hash the password
-        userRepository.persist(user);
-        return Response.status(Response.Status.CREATED).entity("User created successfully with Planner").build();
+        User newUser = new User();
+        newUser.setUsername(userDTO.getUsername());
+        newUser.setPassword(userDTO.getPassword());  // Set password hashes it
+        userRepository.persist(newUser);
+        return Response.status(Response.Status.CREATED).entity("User created successfully").build();
+    }
+
+    @POST
+    @Path("/getAllUsers")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAllUsers() {
+        return Response.ok(userRepository.listAll()).build();
     }
 }

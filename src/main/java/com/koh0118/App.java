@@ -12,13 +12,15 @@ public class App extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/application_layout.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/login_screen.fxml"));
             Parent root = loader.load();
+            LoginAppController controller = loader.getController();
+            controller.setPrimaryStage(primaryStage);
+
             Scene scene = new Scene(root);
-            primaryStage.setTitle("Recipe Sharing Platform");
             primaryStage.setScene(scene);
             primaryStage.show();
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

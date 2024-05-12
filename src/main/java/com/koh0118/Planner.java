@@ -15,8 +15,22 @@ import java.util.List;
 @Setter
 public class Planner extends PanacheEntity {
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    @ManyToOne
+    private Recipe mondayRecipe;
+
+    @ManyToOne
+    private Recipe tuesdayRecipe;
+
+    @ManyToOne
+    private Recipe wednesdayRecipe;
+
+    @ManyToOne
+    private Recipe thursdayRecipe;
+
+    @ManyToOne
+    private Recipe fridayRecipe;
 
     @ManyToMany
     private List<Recipe> recipes = new ArrayList<>();

@@ -9,11 +9,12 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.koh0118.AppController">
     <children>
-        <TabPane prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE">
+        <TabPane fx:id="tabPane" prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE">
             <tabs>
                 <Tab closable="false" text="Create a Recipe">
                     <content>
@@ -61,20 +62,27 @@
                         </AnchorPane>
                     </content>
                 </Tab>
-            <Tab text="Plan">
-              <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                        <Text layoutX="238.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Meal plan for this week:" />
-                        <Text layoutX="62.0" layoutY="99.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Monday" />
-                        <Text layoutX="122.0" layoutY="99.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tuesday" />
-                        <Text layoutX="176.0" layoutY="99.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Wednesday" />
-                        <Text layoutX="251.0" layoutY="99.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Thursday" />
-                        <Text layoutX="318.0" layoutY="99.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Friday" />
-                     </children>
-                  </AnchorPane>
-              </content>
-            </Tab>
+                <Tab text="Plan">
+                    <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                            <children>
+                                <Text fx:id="textMealPlan" layoutX="238.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Meal plan for this week:" />
+                                <VBox fx:id="vboxDays" layoutX="45.0" layoutY="132.0" prefHeight="181.0" prefWidth="75.0" spacing="14.0">
+                                    <children>
+                                        <Text fx:id="textMonday" strokeType="OUTSIDE" strokeWidth="0.0" text="Monday" />
+                                        <Text fx:id="textTuesday" lineSpacing="46.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tuesday" />
+                                        <Text fx:id="textWednesday" strokeType="OUTSIDE" strokeWidth="0.0" text="Wednesday" />
+                                        <Text fx:id="textThursday" strokeType="OUTSIDE" strokeWidth="0.0" text="Thursday" />
+                                        <Text fx:id="textFriday" strokeType="OUTSIDE" strokeWidth="0.0" text="Friday" />
+                                    </children>
+                                </VBox>
+                                <ListView fx:id="planListViewRecipes" layoutX="120.0" layoutY="127.0" prefHeight="159.0" prefWidth="200.0" />
+                                <Button fx:id="btnShowRecipeDetail" layoutX="370.0" layoutY="186.0" mnemonicParsing="false" text="Show Recipe Detail" onAction="#showRecipeDetail"/>
+                            </children>
+                        </AnchorPane>
+                    </content>
+                </Tab>
+
             </tabs>
         </TabPane>
     </children>
