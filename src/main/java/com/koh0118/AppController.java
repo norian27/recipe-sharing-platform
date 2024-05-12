@@ -52,17 +52,21 @@ public class AppController {
     private ChoiceBox<String> planner_recipes_in_planner_fri_choices;
 
     @FXML
-    private Button btnShowRecipeDetail;
-    @FXML
     private ListView<String> planListViewRecipes;
 
     private Map<String, String> dayToRecipeMap = new HashMap<>();
     private Map<String, RecipeDTO> dayToRecipeDetails = new HashMap<>();
 
 
+    @FXML
+    private Button submitButton;
+    private boolean isEditMode = false;
+    private Long editingRecipeId = null;  // Store the ID of the recipe being edited
+
+
     private String currentUsername;
     private String getCurrentUsername() {
-        return currentUsername; // Placeholder for now
+        return currentUsername;
     }
     void setCurrentUsername(String username) {
         currentUsername = username;
@@ -224,7 +228,9 @@ public class AppController {
     }
     @FXML
     private void submitRecipe() {
-        logger.info("Submitting recipe");
+        String uri = isEditMode ? "http://localhost:8080/recipes/update/" + editingRecipeId : "http://localhost:8080/recipes";
+        String method = isEditMode ? "PUT" : "POST";
+
         String json = String.format("{\"title\":\"%s\", \"description\":\"%s\", \"ingredients\":\"%s\", \"instructions\":\"%s\"}",
                 create_recipe_name_textfield.getText(),
                 create_recipe_description_textfield.getText(),
@@ -232,21 +238,61 @@ public class AppController {
                 create_recipe_steps_textfield.getText());
 
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/recipes"))
+                .uri(URI.create(uri))
                 .header("Content-Type", "application/json")
-                .POST(HttpRequest.BodyPublishers.ofString(json))
+                .method(method, HttpRequest.BodyPublishers.ofString(json))
                 .build();
 
-        HttpClient client = HttpClient.newHttpClient();
-        client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+        HttpClient.newHttpClient().sendAsync(request, HttpResponse.BodyHandlers.ofString())
                 .thenAccept(response -> {
-                    if (response.statusCode() == 201) {
-                        clearForm();
-                        fetchRecipes();
-                        logger.info("Recipe submitted successfully");
-                    }
+                    Platform.runLater(() -> {
+                        if (response.statusCode() == 200 || response.statusCode() == 201) {
+                            clearForm();
+                            fetchRecipes();
+                            logger.info(isEditMode ? "Recipe updated successfully" : "Recipe created successfully");
+                            isEditMode = false;  // Reset the mode to 'create' after successful submission
+                            editingRecipeId = null; // Reset the editing ID
+                        } else {
+                            logger.severe("Failed to submit recipe, status code: " + response.statusCode());
+                        }
+                    });
                 }).exceptionally(ex -> {
                     ex.printStackTrace();
+                    return null;
+                });
+    }
+    @FXML
+    private void onEditRecipe() {
+        String selected = recipes_all_recipes_listview.getSelectionModel().getSelectedItem();
+        if (selected != null && !selected.isEmpty()) {
+            Long recipeId = Long.parseLong(selected.split(" - ")[0]);
+            loadRecipeForEditing(recipeId);
+        }
+    }
+    private void loadRecipeForEditing(Long recipeId) {
+        HttpClient.newHttpClient().sendAsync(
+                        HttpRequest.newBuilder().uri(URI.create("http://localhost:8080/recipes/" + recipeId)).GET().build(),
+                        HttpResponse.BodyHandlers.ofString())
+                .thenApply(HttpResponse::body)
+                .thenAccept(jsonString -> {
+                    try {
+                        ObjectMapper mapper = new ObjectMapper();
+                        RecipeDTO recipe = mapper.readValue(jsonString, RecipeDTO.class);
+                        Platform.runLater(() -> {
+                            create_recipe_name_textfield.setText(recipe.getTitle());
+                            create_recipe_description_textfield.setText(recipe.getDescription());
+                            create_recipe_ingredients_textfield.setText(recipe.getIngredients());
+                            create_recipe_steps_textfield.setText(recipe.getInstructions());
+                            isEditMode = true;
+                            editingRecipeId = recipeId;
+                            tabPane.getSelectionModel().select(0);  // Assuming the editor tab index is 0
+                        });
+                    } catch (JsonProcessingException e) {
+                        // Log and handle the exception
+                        logger.severe("Failed to parse recipe data: " + e.getMessage());
+                    }
+                }).exceptionally(ex -> {
+                    logger.severe("Error retrieving recipe data: " + ex.getMessage());
                     return null;
                 });
     }
@@ -418,8 +464,7 @@ public class AppController {
         });
     }
 
-    public void editRecipe(ActionEvent actionEvent) {
-    }
+
 
     @FXML
     public void deleteRecipe(ActionEvent actionEvent) {
