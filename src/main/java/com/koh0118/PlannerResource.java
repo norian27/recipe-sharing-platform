@@ -28,7 +28,7 @@ public class PlannerResource {
     @Transactional
     public Response addRecipeToPlanner(@PathParam("recipeId") String recipeId, @PathParam(USERNAME) String username) {
         User user = userRepository.find(USERNAME, username).firstResult();
-        Recipe recipe = PanacheEntityBase.findById(recipeId);
+        Recipe recipe = Recipe.findById(recipeId);
 
         if (user == null || recipe == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
@@ -65,7 +65,7 @@ public class PlannerResource {
     @Transactional
     public Response deleteRecipeFromPlanner(@PathParam("recipeId") String recipeId, @PathParam(USERNAME) String username) {
         User user = userRepository.find(USERNAME, username).firstResult();
-        Recipe recipe = PanacheEntityBase.findById(recipeId);
+        Recipe recipe = Recipe.findById(recipeId);
 
         if (user == null || recipe == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
@@ -85,7 +85,7 @@ public class PlannerResource {
                                     @PathParam("recipeId") Long recipeId,
                                     @PathParam("day") String day) {
         User user = userRepository.find(USERNAME, username).firstResult();
-        Recipe recipe = PanacheEntityBase.findById(recipeId);
+        Recipe recipe = Recipe.findById(recipeId);
         if (user == null || recipe == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }

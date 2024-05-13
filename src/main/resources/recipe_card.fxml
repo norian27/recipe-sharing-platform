@@ -14,10 +14,10 @@
          </font>
       </Text>
       <TextArea fx:id="recipeCardDescription" editable="false" layoutX="38.0" layoutY="107.0" prefHeight="117.0" prefWidth="297.0" />
-      <Text fx:id="recipe_card_description_title" layoutX="38.0" layoutY="103.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Description" />
+      <Text fx:id="recipe_card_description_title" layoutX="38.0" layoutY="103.0" strokeType="OUTSIDE" strokeWidth="0.0" text="%label.recipeCard.description" />
       <TextArea fx:id="recipeCardInstructions" editable="false" layoutX="38.0" layoutY="241.0" prefHeight="117.0" prefWidth="297.0" />
-      <Text fx:id="recipe_card_instructions_title" layoutX="38.0" layoutY="237.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Instructions" />
+      <Text fx:id="recipe_card_instructions_title" layoutX="38.0" layoutY="237.0" strokeType="OUTSIDE" strokeWidth="0.0" text="%label.recipeCard.instructions" />
       <TextArea fx:id="recipeCardIngredients" layoutX="38.0" layoutY="375.0" prefHeight="39.0" prefWidth="297.0" />
-      <Text fx:id="recipe_card_ingredients_title" layoutX="38.0" layoutY="371.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ingredients" />
+      <Text fx:id="recipe_card_ingredients_title" layoutX="38.0" layoutY="371.0" strokeType="OUTSIDE" strokeWidth="0.0" text="%label.recipeCard.ingredients" />
    </children>
 </AnchorPane>

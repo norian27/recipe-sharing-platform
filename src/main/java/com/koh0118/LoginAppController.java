@@ -130,7 +130,7 @@ public class LoginAppController {
                 mainAppController.setCurrentUsername(loginUsernameText.getText());
                 Scene scene = new Scene(root);
                 primaryStage.setScene(scene);
-                primaryStage.setTitle("Main Application");
+                primaryStage.setTitle(resourceBundle.getString("app.title"));
                 primaryStage.show();
             } catch (IOException e) {
                 logger.error("Failed to load main application view: {}", e.getMessage());

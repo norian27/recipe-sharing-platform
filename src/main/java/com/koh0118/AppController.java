@@ -107,10 +107,12 @@ public class AppController {
 
     private void openRecipeCard(RecipeDTO details) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/recipe_card.fxml"));
+            ResourceBundle resourceBundle = LocaleManager.getInstance().getResourceBundle();
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/recipe_card.fxml"),resourceBundle);
             Parent root = loader.load();
             Stage stage = new Stage();
-            stage.setTitle("Recipe Details");
+            stage.setTitle(resourceBundle.getString("recipeDetail.title"));
             stage.setScene(new Scene(root));
 
             RecipeCardAppController controller = loader.getController();
@@ -168,12 +170,17 @@ public class AppController {
     }
 
     private void setupTabChangeListener() {
+        ResourceBundle resourceBundle = LocaleManager.getInstance().getResourceBundle();
+
         tabPane.getSelectionModel().selectedItemProperty().addListener((obs, oldTab, newTab) -> {
-            if (newTab != null && "Planner".equals(newTab.getText())) {
+            String plannerTabTitle = resourceBundle.getString("tab.planner");
+            String planTabTitle = resourceBundle.getString("tab.plan");
+
+            if (newTab != null && plannerTabTitle.equals(newTab.getText())) {
                 fetchPlannerRecipes();
                 restoreChoiceBoxSelections();
             }
-            if (newTab != null && "Plan".equals(newTab.getText())) {
+            if (newTab != null && planTabTitle.equals(newTab.getText())) {
                 fetchWeeklyPlan();
             }
         });
