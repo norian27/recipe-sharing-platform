@@ -17,16 +17,15 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class AppController {
+
     private static final String USERNAME_NOT_AVAILABLE = "Username is not available";
     private static final String CONTENT_TYPE = "Content-Type";
     private static final String APPLICATION_JSON = "application/json";
@@ -73,7 +72,7 @@ public class AppController {
 
 
     private static String currentUsername;
-    static String getCurrentUsername() {
+    String getCurrentUsername() {
         return currentUsername;
     }
     void setCurrentUsername(String username) {

@@ -16,10 +16,10 @@ public class RecipeCardAppController {
     private static final Logger logger = Logger.getLogger(RecipeCardAppController.class.getName());
 
 
-    @FXML private Text recipe_card_name;
-    @FXML private TextArea recipe_card_description;
-    @FXML private TextArea recipe_card_instructions;
-    @FXML private TextArea recipe_card_ingredients;
+    @FXML private Text recipeCardName;
+    @FXML private TextArea recipeCardDescription;
+    @FXML private TextArea recipeCardInstructions;
+    @FXML private TextArea recipeCardIngredients;
 
     private Stage primaryStage;
 
@@ -42,10 +42,10 @@ public class RecipeCardAppController {
     }
     public void setRecipeDetails(RecipeDTO details) {
         try {
-            recipe_card_name.setText(details.getTitle());
-            recipe_card_description.setText(details.getDescription());
-            recipe_card_instructions.setText(details.getInstructions());
-            recipe_card_ingredients.setText(details.getIngredients());
+            recipeCardName.setText(details.getTitle());
+            recipeCardDescription.setText(details.getDescription());
+            recipeCardInstructions.setText(details.getInstructions());
+            recipeCardIngredients.setText(details.getIngredients());
         } catch (NullPointerException e) {
             logger.log(Level.SEVERE, "Component not initialized, or null values passed.", e);
         } catch (Exception e) {

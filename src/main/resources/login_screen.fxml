@@ -8,12 +8,12 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="355.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.koh0118.LoginAppController">
    <children>
-      <TextField fx:id="login_username_text" layoutX="103.0" layoutY="120.0" />
-      <TextField fx:id="login_password_text" layoutX="103.0" layoutY="167.0" />
-      <Button fx:id="login_button" layoutX="152.0" layoutY="247.0" mnemonicParsing="false" text="Login" onAction="#handleLogin"/>
-      <Button fx:id="login_register_button" layoutX="145.0" layoutY="282.0" mnemonicParsing="false" text="Register" onAction="#handleRegister"/>
-      <Text fx:id="login_username" layoutX="103.0" layoutY="116.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Username" />
-      <Text fx:id="login_password" layoutX="105.0" layoutY="163.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Password" />
-      <Text fx:id="login_status" layoutX="105.0" layoutY="226.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" " />
+      <TextField fx:id="loginUsernameText" layoutX="103.0" layoutY="120.0" />
+      <TextField fx:id="loginPasswordText" layoutX="103.0" layoutY="167.0" />
+      <Button fx:id="login_button" layoutX="152.0" layoutY="247.0" mnemonicParsing="false" text="%button.login" onAction="#handleLogin"/>
+      <Button fx:id="login_register_button" layoutX="145.0" layoutY="282.0" mnemonicParsing="false" text="%button.register" onAction="#handleRegister"/>
+      <Text fx:id="login_username" layoutX="103.0" layoutY="116.0" strokeType="OUTSIDE" strokeWidth="0.0" text="%label.login.username" />
+      <Text fx:id="login_password" layoutX="105.0" layoutY="163.0" strokeType="OUTSIDE" strokeWidth="0.0" text="%label.login.password" />
+      <Text fx:id="loginStatus" layoutX="105.0" layoutY="226.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" " />
    </children>
 </AnchorPane>

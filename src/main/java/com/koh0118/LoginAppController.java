@@ -1,6 +1,5 @@
 package com.koh0118;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -15,25 +14,36 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.Locale;
+import java.util.ResourceBundle;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class LoginAppController {
-    @FXML private TextField login_username_text;
-    @FXML private TextField login_password_text;
-    @FXML private Text login_status;
+
+    @FXML private TextField loginUsernameText;
+    @FXML private TextField loginPasswordText;
+    @FXML private Text loginStatus;
 
     private Stage primaryStage;
 
+    private static final Logger logger = LoggerFactory.getLogger(LoginAppController.class);
+
+    private static final HttpClient httpClient = HttpClient.newHttpClient();
+
     public void setPrimaryStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
-        System.out.println("Primary Stage set");
+        logger.info("Primary Stage set");
     }
+
 
     @FXML
     private void handleLogin() {
-        String username = login_username_text.getText();
-        String password = login_password_text.getText();
+        String username = loginUsernameText.getText();
+        String password = loginPasswordText.getText();
         if (username.isEmpty() || password.isEmpty()) {
-            login_status.setText("Username and password are required");
+            loginStatus.setText("Username and password are required");
             return;
         }
 
@@ -44,35 +54,35 @@ public class LoginAppController {
                 .POST(HttpRequest.BodyPublishers.ofString(json))
                 .build();
 
-        HttpClient.newHttpClient().sendAsync(request, HttpResponse.BodyHandlers.ofString())
+        httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString())
                 .thenApply(response -> {
-                    System.out.println("Response status: " + response.statusCode());
-                    System.out.println("Response body: " + response.body());
+                    logger.info("Response status: {}",response.statusCode());
+                    logger.info("Response body: {}",response.body());
                     return response;
                 })
                 .thenAccept(response -> {
                     if (response.statusCode() == 200) {
                         Platform.runLater(() -> {
-                            login_status.setText("Login successful");
+                            loginStatus.setText("Login successful");
                             loadMainApplicationView();
                         });
                     } else {
-                        Platform.runLater(() -> login_status.setText("Login failed: " + response.body()));
+                        Platform.runLater(() -> loginStatus.setText("Login failed: " + response.body()));
                     }
                 }).exceptionally(ex -> {
-                    Platform.runLater(() -> login_status.setText("Error: " + ex.getMessage()));
-                    ex.printStackTrace();
+                    Platform.runLater(() -> loginStatus.setText("Error: " + ex.getMessage()));
+                    logger.error("Error: {}", ex.getMessage());
                     return null;
                 });
     }
 
     @FXML
     private void handleRegister() {
-        System.out.println("Attempting to register");
-        String username = login_username_text.getText();
-        String password = login_password_text.getText();
+        logger.info("Attempting to register");
+        String username = loginUsernameText.getText();
+        String password = loginPasswordText.getText();
         if (username.isEmpty() || password.isEmpty()) {
-            login_status.setText("Username and password are required");
+            loginStatus.setText("Username and password are required");
             return;
         }
 
@@ -83,45 +93,47 @@ public class LoginAppController {
                 .POST(HttpRequest.BodyPublishers.ofString(json))
                 .build();
 
-        HttpClient.newHttpClient().sendAsync(request, HttpResponse.BodyHandlers.ofString())
+        httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString())
                 .thenApply(HttpResponse::statusCode)
                 .thenAccept(statusCode -> {
                     if (statusCode == 201) {
                         Platform.runLater(() -> {
-                            login_status.setText("Registration successful");
+                            loginStatus.setText("Registration successful");
                             if (primaryStage != null) {
                                 loadMainApplicationView();
                             } else {
-                                System.err.println("Primary stage is null");
+                                logger.error("Primary stage is null");
                             }
                         });
                     } else {
-                        Platform.runLater(() -> login_status.setText("Registration failed: " + statusCode));
+                        Platform.runLater(() -> loginStatus.setText("Registration failed: " + statusCode));
                     }
                 }).exceptionally(ex -> {
-                    Platform.runLater(() -> login_status.setText("Error: " + ex.getMessage()));
-                    ex.printStackTrace();
+                    Platform.runLater(() -> loginStatus.setText("Error: " + ex.getMessage()));
+                    logger.error("Error: {}", ex.getMessage());
                     return null;
                 });
     }
 
     private void loadMainApplicationView() {
         if (primaryStage == null) {
-            System.err.println("Primary stage is not set. Cannot load the main view.");
+            logger.error("Primary stage is null");
             return;
         }
         Platform.runLater(() -> {
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/application_layout.fxml"));
+                ResourceBundle resourceBundle = LocaleManager.getInstance().getResourceBundle();
+
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/application_layout.fxml"), resourceBundle);
                 Parent root = loader.load();
                 AppController mainAppController = loader.getController();
-                mainAppController.setCurrentUsername(login_username_text.getText());
+                mainAppController.setCurrentUsername(loginUsernameText.getText());
                 Scene scene = new Scene(root);
                 primaryStage.setScene(scene);
                 primaryStage.setTitle("Main Application");
                 primaryStage.show();
             } catch (IOException e) {
-                e.printStackTrace();
+                logger.error("Failed to load main application view: {}", e.getMessage());
             }
         });
     }
