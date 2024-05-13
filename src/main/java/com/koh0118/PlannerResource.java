@@ -1,7 +1,6 @@
 package com.koh0118;
 
-import io.quarkus.security.identity.SecurityIdentity;
-import jakarta.enterprise.inject.Instance;
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
@@ -13,17 +12,23 @@ import java.util.Map;
 
 @Path("/planners")
 public class PlannerResource {
+    private final UserRepository userRepository;
+    private static final String USERNAME = "username";
+
+
     @Inject
-    UserRepository userRepository;
+    public PlannerResource(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @POST
     @Path("/{username}/addRecipe/{recipeId}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
-    public Response addRecipeToPlanner(@PathParam("recipeId") String recipeId, @PathParam("username") String username) {
-        User user = userRepository.find("username", username).firstResult();
-        Recipe recipe = Recipe.findById(recipeId);
+    public Response addRecipeToPlanner(@PathParam("recipeId") String recipeId, @PathParam(USERNAME) String username) {
+        User user = userRepository.find(USERNAME, username).firstResult();
+        Recipe recipe = PanacheEntityBase.findById(recipeId);
 
         if (user == null || recipe == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
@@ -36,7 +41,7 @@ public class PlannerResource {
 
 
 
-    @POST
+    @GET
     @Path("/getAllPlanners")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllPlanners() {
@@ -46,8 +51,8 @@ public class PlannerResource {
     @GET
     @Path("/getPlannerRecipes/{username}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getPlannerRecipes(@PathParam("username") String username) {
-        User user = userRepository.find("username", username).firstResult();
+    public Response getPlannerRecipes(@PathParam(USERNAME) String username) {
+        User user = userRepository.find(USERNAME, username).firstResult();
         if (user == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
@@ -58,9 +63,9 @@ public class PlannerResource {
     @Path("/{username}/deleteRecipe/{recipeId}")
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
-    public Response deleteRecipeFromPlanner(@PathParam("recipeId") String recipeId, @PathParam("username") String username) {
-        User user = userRepository.find("username", username).firstResult();
-        Recipe recipe = Recipe.findById(recipeId);
+    public Response deleteRecipeFromPlanner(@PathParam("recipeId") String recipeId, @PathParam(USERNAME) String username) {
+        User user = userRepository.find(USERNAME, username).firstResult();
+        Recipe recipe = PanacheEntityBase.findById(recipeId);
 
         if (user == null || recipe == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
@@ -76,11 +81,11 @@ public class PlannerResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
-    public Response setRecipeForDay(@PathParam("username") String username,
+    public Response setRecipeForDay(@PathParam(USERNAME) String username,
                                     @PathParam("recipeId") Long recipeId,
                                     @PathParam("day") String day) {
-        User user = userRepository.find("username", username).firstResult();
-        Recipe recipe = Recipe.findById(recipeId);
+        User user = userRepository.find(USERNAME, username).firstResult();
+        Recipe recipe = PanacheEntityBase.findById(recipeId);
         if (user == null || recipe == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
@@ -116,8 +121,8 @@ public class PlannerResource {
     @GET
     @Path("/getRecipesForWeek/{username}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getRecipesForWeek(@PathParam("username") String username) {
-        User user = userRepository.find("username", username).firstResult();
+    public Response getRecipesForWeek(@PathParam(USERNAME) String username) {
+        User user = userRepository.find(USERNAME, username).firstResult();
         if (user == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }

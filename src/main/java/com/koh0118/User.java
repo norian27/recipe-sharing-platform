@@ -17,7 +17,7 @@ public class User extends PanacheEntity {
     private String passwordHash;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    @JsonbTransient // Prevent serialization of the planner back-reference
+    @JsonbTransient
     private Planner planner;
 
     public User() {

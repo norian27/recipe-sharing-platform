@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Text?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.koh0118.CreateRecipeController">
+    <children>
+        <TextField fx:id="createRecipeNameTextfield" layoutX="38.0" layoutY="61.0" prefWidth="200.0" />
+        <TextArea fx:id="createRecipeDescriptionTextfield" layoutX="270.0" layoutY="61.0" prefHeight="93.0" prefWidth="200.0" />
+        <TextField fx:id="createRecipeIngredientsTextfield" layoutX="38.0" layoutY="116.0" prefWidth="200.0" />
+        <TextArea fx:id="createRecipeStepsTextfield" layoutX="270.0" layoutY="202.0" prefHeight="93.0" prefWidth="200.0" />
+        <Button fx:id="create_recipe_submit" layoutX="39.0" layoutY="270.0" mnemonicParsing="false" onAction="#submitRecipe" text="Submit" />
+        <Text layoutX="37.0" layoutY="50.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name" />
+        <Text layoutX="270.0" layoutY="50.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Description" />
+        <Text layoutX="37.0" layoutY="105.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ingredients" />
+        <Text layoutX="270.0" layoutY="191.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Instructions" />
+    </children>
+</Pane>

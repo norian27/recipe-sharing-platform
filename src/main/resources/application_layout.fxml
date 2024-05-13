@@ -18,50 +18,30 @@
             <tabs>
                 <Tab closable="false" text="Create a Recipe">
                     <content>
-                        <Pane prefHeight="200.0" prefWidth="200.0">
-                            <children>
-                                <TextField fx:id="create_recipe_name_textfield" layoutX="38.0" layoutY="61.0" onAction="#submitRecipe" />
-                                <TextArea fx:id="create_recipe_description_textfield" layoutX="270.0" layoutY="61.0" prefHeight="93.0" prefWidth="200.0" />
-                                <TextField fx:id="create_recipe_ingredients_textfield" layoutX="38.0" layoutY="116.0" />
-                                <TextArea fx:id="create_recipe_steps_textfield" layoutX="270.0" layoutY="202.0" prefHeight="93.0" prefWidth="200.0" />
-                                <Button fx:id="create_recipe_submit" layoutX="39.0" layoutY="270.0" mnemonicParsing="false" onAction="#submitRecipe" text="Submit" />
-                        <Text id="create_a_recipe_ingredients_text" layoutX="37.0" layoutY="112.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ingredients" />
-                        <Text id="create_a_recipe_name_text" layoutX="37.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name" />
-                        <Text id="create_a_recipe_description_text" layoutX="270.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Description" />
-                        <Text id="create_a_recipe_instructions_text" layoutX="270.0" layoutY="199.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Instructions" />
-                            </children>
-                        </Pane>
+                        <fx:include source="create_recipe_tab.fxml"/>
                     </content>
                 </Tab>
+
                 <Tab closable="false" text="Recipes">
                     <content>
                         <Pane prefHeight="200.0" prefWidth="200.0">
                             <children>
-                                <ListView fx:id="recipes_all_recipes_listview" layoutX="20.0" layoutY="22.0" prefHeight="328.0" prefWidth="200.0" />
+                                <ListView fx:id="recipesAllRecipesListview" layoutX="20.0" layoutY="22.0" prefHeight="328.0" prefWidth="200.0" />
                                 <Button fx:id="recipes_add_to_plan" layoutX="256.0" layoutY="270.0" mnemonicParsing="false" onAction="#addRecipeToPlan" text="Add to Plan" />
                                 <Button fx:id="recipes_edit_recipe" layoutX="256.0" layoutY="301.0" mnemonicParsing="false" onAction="#onEditRecipe" text="Edit Recipe" />
                                 <Button fx:id="recipes_delete_recipe" layoutX="512.0" layoutY="270.0" mnemonicParsing="false" onAction="#deleteRecipe" text="Delete" textFill="RED" />
-                                <TextField fx:id="recipes_recipe_name" editable="false" layoutX="256.0" layoutY="22.0" />
-                                <TextArea fx:id="recipes_recipe_details" editable="false" layoutX="256.0" layoutY="72.0" prefHeight="179.0" prefWidth="307.0" />
+                                <TextField fx:id="recipesRecipeName" editable="false" layoutX="256.0" layoutY="22.0" />
+                                <TextArea fx:id="recipesRecipeDetails" editable="false" layoutX="256.0" layoutY="72.0" prefHeight="179.0" prefWidth="307.0" />
                             </children>
                         </Pane>
                     </content>
                 </Tab>
                 <Tab closable="false" text="Planner">
                     <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                            <children>
-                                <ListView fx:id="planner_recipes_in_planner_listview" layoutX="20.0" layoutY="22.0" prefHeight="260.0" prefWidth="200.0" />
-                                <Button fx:id="planner_recipes_in_planner_remove_button" layoutX="22.0" layoutY="316.0" mnemonicParsing="false" onAction="#removeFromPlanner" text="Remove from Planner" />
-                                <ChoiceBox fx:id="planner_recipes_in_planner_mon_choices" layoutX="242.0" layoutY="45.0" prefWidth="150.0" />
-                                <ChoiceBox fx:id="planner_recipes_in_planner_tue_choices" layoutX="242.0" layoutY="86.0" prefWidth="150.0" />
-                                <ChoiceBox fx:id="planner_recipes_in_planner_wed_choices" layoutX="242.0" layoutY="127.0" prefWidth="150.0" />
-                                <ChoiceBox fx:id="planner_recipes_in_planner_thu_choices" layoutX="242.0" layoutY="173.0" prefWidth="150.0" />
-                                <ChoiceBox fx:id="planner_recipes_in_planner_fri_choices" layoutX="242.0" layoutY="214.0" prefWidth="150.0" />
-                            </children>
-                        </AnchorPane>
+                        <fx:include source="planner_tab.fxml" />
                     </content>
                 </Tab>
+
                 <Tab text="Plan">
                     <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">

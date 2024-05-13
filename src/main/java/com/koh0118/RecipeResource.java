@@ -1,6 +1,6 @@
 package com.koh0118;
 
-import jakarta.inject.Inject;
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -44,39 +44,39 @@ public class RecipeResource {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
 
-        List<Planner> planners = Planner.list("mondayRecipe", recipe);
-        planners.addAll(Planner.list("tuesdayRecipe", recipe));
-        planners.addAll(Planner.list("wednesdayRecipe", recipe));
-        planners.addAll(Planner.list("thursdayRecipe", recipe));
-        planners.addAll(Planner.list("fridayRecipe", recipe));
+        clearDailyRecipes(recipe);
+        removeRecipeFromPlanners(recipe);
+
+        PanacheEntityBase.deleteById(id);
+        return Response.ok().build();
+    }
+    private void clearDailyRecipes(Recipe recipe) {
+        List<Planner> planners = Planner.list("from Planner where mondayRecipe = ?1 or tuesdayRecipe = ?1 or wednesdayRecipe = ?1 or thursdayRecipe = ?1 or fridayRecipe = ?1", recipe);
         for (Planner planner : planners) {
-            if (planner.getMondayRecipe() != null && planner.getMondayRecipe().getId().equals(id)) {
+            if (recipe.equals(planner.getMondayRecipe())) {
                 planner.setMondayRecipe(null);
             }
-            if (planner.getTuesdayRecipe() != null && planner.getTuesdayRecipe().getId().equals(id)) {
+            if (recipe.equals(planner.getTuesdayRecipe())) {
                 planner.setTuesdayRecipe(null);
             }
-            if (planner.getWednesdayRecipe() != null && planner.getWednesdayRecipe().getId().equals(id)) {
+            if (recipe.equals(planner.getWednesdayRecipe())) {
                 planner.setWednesdayRecipe(null);
             }
-            if (planner.getThursdayRecipe() != null && planner.getThursdayRecipe().getId().equals(id)) {
+            if (recipe.equals(planner.getThursdayRecipe())) {
                 planner.setThursdayRecipe(null);
             }
-            if (planner.getFridayRecipe() != null && planner.getFridayRecipe().getId().equals(id)) {
+            if (recipe.equals(planner.getFridayRecipe())) {
                 planner.setFridayRecipe(null);
             }
         }
-
-        List<Planner> plannersWithGeneralRecipe = Planner.find("select p from Planner p join p.recipes r where r.id = ?1", id).list();
-        for (Planner planner : plannersWithGeneralRecipe) {
-            planner.getRecipes().removeIf(r -> r.getId().equals(id));
-        }
-
-        Recipe.deleteById(id);
-
-        return Response.ok().build();
     }
 
+    private void removeRecipeFromPlanners(Recipe recipe) {
+        List<Planner> plannersWithGeneralRecipe = Planner.find("select p from Planner p join p.recipes r where r.id = ?1", recipe.getId()).list();
+        for (Planner planner : plannersWithGeneralRecipe) {
+            planner.getRecipes().removeIf(r -> r.getId().equals(recipe.getId()));
+        }
+    }
     @PUT
     @Path("update/{id}")
     @Transactional

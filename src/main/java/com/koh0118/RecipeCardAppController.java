@@ -9,8 +9,12 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class RecipeCardAppController {
+    private static final Logger logger = Logger.getLogger(RecipeCardAppController.class.getName());
+
 
     @FXML private Text recipe_card_name;
     @FXML private TextArea recipe_card_description;
@@ -27,13 +31,13 @@ public class RecipeCardAppController {
 
     private void showRecipeCardAppView() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/recipe_card.fxml"));  // Ensure the path is correct
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/recipe_card.fxml"));
             Parent root = loader.load();
             primaryStage.setScene(new Scene(root));
             primaryStage.show();
 
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "Failed to load the Recipe card.", e);
         }
     }
     public void setRecipeDetails(RecipeDTO details) {
@@ -43,11 +47,9 @@ public class RecipeCardAppController {
             recipe_card_instructions.setText(details.getInstructions());
             recipe_card_ingredients.setText(details.getIngredients());
         } catch (NullPointerException e) {
-            System.err.println("Component not initialized.");
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "Component not initialized, or null values passed.", e);
         } catch (Exception e) {
-            System.err.println("Error setting recipe details.");
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "Error setting recipe details.", e);
         }
     }
 

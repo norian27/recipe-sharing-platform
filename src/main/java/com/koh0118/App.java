@@ -6,9 +6,12 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class App extends Application {
+    private static final Logger logger = Logger.getLogger(App.class.getName());
+
     @Override
     public void start(Stage primaryStage) {
         try {
@@ -21,7 +24,7 @@ public class App extends Application {
             primaryStage.setScene(scene);
             primaryStage.show();
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "Failed to load the login screen.", e);
         }
     }
 

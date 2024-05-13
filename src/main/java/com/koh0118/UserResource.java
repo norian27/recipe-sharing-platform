@@ -1,10 +1,7 @@
 package com.koh0118;
 
 import jakarta.inject.Inject;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.transaction.Transactional;
@@ -13,9 +10,12 @@ import jakarta.transaction.Transactional;
 
 @Path("/auth")
 public class UserResource {
-    @Inject
-    UserRepository userRepository;
+    private final UserRepository userRepository;
 
+    @Inject
+    public UserResource(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
     @POST
     @Path("/login")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -53,7 +53,7 @@ public class UserResource {
         return Response.status(Response.Status.CREATED).entity("User created successfully").build();
     }
 
-    @POST
+    @GET
     @Path("/getAllUsers")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllUsers() {
