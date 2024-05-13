@@ -47,8 +47,12 @@ public class RecipeResource {
         clearDailyRecipes(recipe);
         removeRecipeFromPlanners(recipe);
 
-        PanacheEntityBase.deleteById(id);
-        return Response.ok().build();
+        boolean deleted = Recipe.deleteById(id);
+        if (deleted) {
+            return Response.noContent().build();
+        } else {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
     }
     private void clearDailyRecipes(Recipe recipe) {
         List<Planner> planners = Planner.list("from Planner where mondayRecipe = ?1 or tuesdayRecipe = ?1 or wednesdayRecipe = ?1 or thursdayRecipe = ?1 or fridayRecipe = ?1", recipe);
@@ -68,15 +72,17 @@ public class RecipeResource {
             if (recipe.equals(planner.getFridayRecipe())) {
                 planner.setFridayRecipe(null);
             }
+            planner.persist();
         }
     }
-
     private void removeRecipeFromPlanners(Recipe recipe) {
         List<Planner> plannersWithGeneralRecipe = Planner.find("select p from Planner p join p.recipes r where r.id = ?1", recipe.getId()).list();
         for (Planner planner : plannersWithGeneralRecipe) {
             planner.getRecipes().removeIf(r -> r.getId().equals(recipe.getId()));
+            planner.persist();
         }
     }
+
     @PUT
     @Path("update/{id}")
     @Transactional

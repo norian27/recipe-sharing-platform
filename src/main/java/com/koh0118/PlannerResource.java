@@ -71,7 +71,25 @@ public class PlannerResource {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
 
-        user.getPlanner().getRecipes().remove(recipe);
+        Planner planner = user.getPlanner();
+        planner.getRecipes().remove(recipe);
+
+        if (recipe.equals(planner.getMondayRecipe())) {
+            planner.setMondayRecipe(null);
+        }
+        if (recipe.equals(planner.getTuesdayRecipe())) {
+            planner.setTuesdayRecipe(null);
+        }
+        if (recipe.equals(planner.getWednesdayRecipe())) {
+            planner.setWednesdayRecipe(null);
+        }
+        if (recipe.equals(planner.getThursdayRecipe())) {
+            planner.setThursdayRecipe(null);
+        }
+        if (recipe.equals(planner.getFridayRecipe())) {
+            planner.setFridayRecipe(null);
+        }
+
         userRepository.persist(user);
         return Response.ok().build();
     }

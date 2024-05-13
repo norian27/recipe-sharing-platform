@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.koh0118.PlanController">
+    <Text fx:id="textMealPlan" layoutX="238.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="%label.planner.mealPlan"/>
+    <VBox fx:id="vboxDays" layoutX="45.0" layoutY="132.0" prefHeight="181.0" prefWidth="75.0" spacing="14.0">
+        <Text fx:id="textMonday" strokeType="OUTSIDE" strokeWidth="0.0" text="%label.planner.monday"/>
+        <Text fx:id="textTuesday" lineSpacing="46.0" strokeType="OUTSIDE" strokeWidth="0.0" text="%label.planner.tuesday"/>
+        <Text fx:id="textWednesday" strokeType="OUTSIDE" strokeWidth="0.0" text="%label.planner.wednesday"/>
+        <Text fx:id="textThursday" strokeType="OUTSIDE" strokeWidth="0.0" text="%label.planner.thursday"/>
+        <Text fx:id="textFriday" strokeType="OUTSIDE" strokeWidth="0.0" text="%label.planner.friday"/>
+    </VBox>
+    <ListView fx:id="planListViewRecipes" layoutX="120.0" layoutY="127.0" prefHeight="159.0" prefWidth="200.0"/>
+    <Button fx:id="btnShowRecipeDetail" layoutX="370.0" layoutY="186.0" mnemonicParsing="false" text="%button.showRecipeDetail" onAction="#showRecipeDetail"/>
+</AnchorPane>

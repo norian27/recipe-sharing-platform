@@ -5,14 +5,13 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.koh0118.PlannerController" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-    <children>
-        <ListView fx:id="plannerRecipesInPlannerListview" layoutX="20.0" layoutY="22.0" prefHeight="260.0" prefWidth="200.0" />
-        <Button fx:id="planner_recipes_in_planner_remove_button" layoutX="22.0" layoutY="316.0" mnemonicParsing="false" onAction="#removeFromPlanner" text="Remove from Planner" />
-        <ChoiceBox fx:id="plannerRecipesInPlannerMonChoices" layoutX="242.0" layoutY="45.0" prefWidth="150.0" />
-        <ChoiceBox fx:id="plannerRecipesInPlannerTueChoices" layoutX="242.0" layoutY="86.0" prefWidth="150.0" />
-        <ChoiceBox fx:id="plannerRecipesInPlannerWedChoices" layoutX="242.0" layoutY="127.0" prefWidth="150.0" />
-        <ChoiceBox fx:id="plannerRecipesInPlannerThuChoices" layoutX="242.0" layoutY="173.0" prefWidth="150.0" />
-        <ChoiceBox fx:id="plannerRecipesInPlannerFriChoices" layoutX="242.0" layoutY="214.0" prefWidth="150.0" />
-    </children>
+<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.koh0118.PlannerController">
+    <ListView fx:id="plannerRecipesInPlannerListview" layoutX="20.0" layoutY="22.0" prefHeight="260.0" prefWidth="200.0"/>
+    <Button fx:id="planner_recipes_in_planner_remove_button" layoutX="22.0" layoutY="316.0" mnemonicParsing="false" onAction="#removeFromPlanner" text="%button.removeFromPlanner"/>
+    <ChoiceBox fx:id="plannerRecipesInPlannerMonChoices" layoutX="242.0" layoutY="45.0" prefWidth="150.0"/>
+    <ChoiceBox fx:id="plannerRecipesInPlannerTueChoices" layoutX="242.0" layoutY="86.0" prefWidth="150.0"/>
+    <ChoiceBox fx:id="plannerRecipesInPlannerWedChoices" layoutX="242.0" layoutY="127.0" prefWidth="150.0"/>
+    <ChoiceBox fx:id="plannerRecipesInPlannerThuChoices" layoutX="242.0" layoutY="173.0" prefWidth="150.0"/>
+    <ChoiceBox fx:id="plannerRecipesInPlannerFriChoices" layoutX="242.0" layoutY="214.0" prefWidth="150.0"/>
 </AnchorPane>

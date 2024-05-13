@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.Pane?>
+
+<Pane prefHeight="200.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.koh0118.RecipesController">
+    <ListView fx:id="recipesAllRecipesListview" layoutX="20.0" layoutY="22.0" prefHeight="328.0" prefWidth="200.0"/>
+    <Button fx:id="recipes_add_to_plan" layoutX="256.0" layoutY="270.0" mnemonicParsing="false" onAction="#addRecipeToPlan" text="%button.addToPlan"/>
+    <Button fx:id="recipes_edit_recipe" layoutX="256.0" layoutY="301.0" mnemonicParsing="false" onAction="#onEditRecipe" text="%button.editRecipe"/>
+    <Button fx:id="recipes_delete_recipe" layoutX="512.0" layoutY="270.0" mnemonicParsing="false" onAction="#deleteRecipe" text="%button.deleteRecipe" textFill="RED"/>
+    <TextField fx:id="recipesRecipeName" editable="false" layoutX="256.0" layoutY="22.0"/>
+    <TextArea fx:id="recipesRecipeDetails" editable="false" layoutX="256.0" layoutY="72.0" prefHeight="179.0" prefWidth="307.0"/>
+</Pane>

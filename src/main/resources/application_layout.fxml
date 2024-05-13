@@ -16,80 +16,9 @@
       prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.koh0118.AppController">
     <TabPane fx:id="tabPane" prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE">
-        <Tab closable="false" text="%tab.createRecipe">
-            <Pane prefHeight="200.0" prefWidth="200.0">
-                <TextField fx:id="createRecipeNameTextfield" layoutX="38.0" layoutY="61.0"
-                           onAction="#submitRecipe"/>
-                <TextArea fx:id="createRecipeDescriptionTextfield" layoutX="270.0" layoutY="61.0"
-                          prefHeight="93.0" prefWidth="200.0"/>
-                <TextField fx:id="createRecipeIngredientsTextfield" layoutX="38.0" layoutY="116.0"/>
-                <TextArea fx:id="createRecipeStepsTextfield" layoutX="270.0" layoutY="202.0"
-                          prefHeight="93.0" prefWidth="200.0"/>
-                <Button fx:id="create_recipe_submit" layoutX="39.0" layoutY="270.0" mnemonicParsing="false"
-                        onAction="#submitRecipe" text="%button.submit"/>
-                <Text id="create_a_recipe_ingredients_text" layoutX="37.0" layoutY="112.0"
-                      strokeType="OUTSIDE" strokeWidth="0.0" text="%label.recipeCard.ingredients"/>
-                <Text id="create_a_recipe_name_text" layoutX="37.0" layoutY="57.0" strokeType="OUTSIDE"
-                      strokeWidth="0.0" text="%label.createRecipe.name"/>
-                <Text id="create_a_recipe_description_text" layoutX="270.0" layoutY="57.0"
-                      strokeType="OUTSIDE" strokeWidth="0.0" text="%label.recipeCard.description"/>
-                <Text id="create_a_recipe_instructions_text" layoutX="270.0" layoutY="199.0"
-                      strokeType="OUTSIDE" strokeWidth="0.0" text="%label.recipeCard.instructions"/>
-            </Pane>
-        </Tab>
-        <Tab closable="false" text="%tab.recipes">
-            <Pane prefHeight="200.0" prefWidth="200.0">
-                <ListView fx:id="recipesAllRecipesListview" layoutX="20.0" layoutY="22.0" prefHeight="328.0"
-                          prefWidth="200.0"/>
-                <Button fx:id="recipes_add_to_plan" layoutX="256.0" layoutY="270.0" mnemonicParsing="false"
-                        onAction="#addRecipeToPlan" text="%button.addToPlan"/>
-                <Button fx:id="recipes_edit_recipe" layoutX="256.0" layoutY="301.0" mnemonicParsing="false"
-                        onAction="#onEditRecipe" text="%button.editRecipe"/>
-                <Button fx:id="recipes_delete_recipe" layoutX="512.0" layoutY="270.0"
-                        mnemonicParsing="false" onAction="#deleteRecipe" text="%button.deleteRecipe" textFill="RED"/>
-                <TextField fx:id="recipesRecipeName" editable="false" layoutX="256.0" layoutY="22.0"/>
-                <TextArea fx:id="recipesRecipeDetails" editable="false" layoutX="256.0" layoutY="72.0"
-                          prefHeight="179.0" prefWidth="307.0"/>
-            </Pane>
-        </Tab>
-        <Tab closable="false" text="%tab.planner">
-            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                <ListView fx:id="plannerRecipesInPlannerListview" layoutX="20.0" layoutY="22.0"
-                          prefHeight="260.0" prefWidth="200.0"/>
-                <Button fx:id="planner_recipes_in_planner_remove_button" layoutX="22.0" layoutY="316.0"
-                        mnemonicParsing="false" onAction="#removeFromPlanner" text="%button.removeFromPlanner"/>
-                <ChoiceBox fx:id="plannerRecipesInPlannerMonChoices" layoutX="242.0" layoutY="45.0"
-                           prefWidth="150.0"/>
-                <ChoiceBox fx:id="plannerRecipesInPlannerTueChoices" layoutX="242.0" layoutY="86.0"
-                           prefWidth="150.0"/>
-                <ChoiceBox fx:id="plannerRecipesInPlannerWedChoices" layoutX="242.0" layoutY="127.0"
-                           prefWidth="150.0"/>
-                <ChoiceBox fx:id="plannerRecipesInPlannerThuChoices" layoutX="242.0" layoutY="173.0"
-                           prefWidth="150.0"/>
-                <ChoiceBox fx:id="plannerRecipesInPlannerFriChoices" layoutX="242.0" layoutY="214.0"
-                           prefWidth="150.0"/>
-            </AnchorPane>
-        </Tab>
-        <Tab text="%tab.plan">
-            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                <Text fx:id="textMealPlan" layoutX="238.0" layoutY="40.0" strokeType="OUTSIDE"
-                      strokeWidth="0.0" text="%label.planner.mealPlan"/>
-                <VBox fx:id="vboxDays" layoutX="45.0" layoutY="132.0" prefHeight="181.0" prefWidth="75.0"
-                      spacing="14.0">
-                    <Text fx:id="textMonday" strokeType="OUTSIDE" strokeWidth="0.0" text="%label.planner.monday"/>
-                    <Text fx:id="textTuesday" lineSpacing="46.0" strokeType="OUTSIDE" strokeWidth="0.0"
-                          text="%label.planner.tuesday"/>
-                    <Text fx:id="textWednesday" strokeType="OUTSIDE" strokeWidth="0.0"
-                          text="%label.planner.wednesday"/>
-                    <Text fx:id="textThursday" strokeType="OUTSIDE" strokeWidth="0.0" text="%label.planner.thursday"/>
-                    <Text fx:id="textFriday" strokeType="OUTSIDE" strokeWidth="0.0" text="%label.planner.friday"/>
-                </VBox>
-                <ListView fx:id="planListViewRecipes" layoutX="120.0" layoutY="127.0" prefHeight="159.0"
-                          prefWidth="200.0"/>
-                <Button fx:id="btnShowRecipeDetail" layoutX="370.0" layoutY="186.0" mnemonicParsing="false"
-                        text="%button.showRecipeDetail" onAction="#showRecipeDetail"/>
-            </AnchorPane>
-        </Tab>
-
+        <Tab fx:id="createRecipeTab" closable="false" text="%tab.createRecipe"/>
+        <Tab fx:id="recipesTab" closable="false" text="%tab.recipes"/>
+        <Tab fx:id="plannerTab" closable="false" text="%tab.planner"/>
+        <Tab fx:id="planTab" text="%tab.plan"/>
     </TabPane>
 </Pane>
